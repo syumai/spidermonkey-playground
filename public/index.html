@@ -241,6 +241,19 @@
   footer code {
     font-family: "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
   }
+
+  footer p {
+    margin: 0.2rem 0;
+  }
+
+  footer a {
+    color: var(--muted);
+    text-decoration: underline;
+  }
+
+  footer a:hover {
+    color: var(--accent);
+  }
 </style>
 </head>
 <body>
@@ -268,7 +281,10 @@
     <pre id="output" class="empty">Output will appear here.</pre>
   </div>
 
-  <footer>POST /api/eval with the code as the raw request body.</footer>
+  <footer>
+    <p>POST /api/eval with the code as the raw request body.</p>
+    <p>Powered by <a href="https://github.com/goccy/go-spidermonkey">goccy/go-spidermonkey</a>.</p>
+  </footer>
 </main>
 
 <script>
