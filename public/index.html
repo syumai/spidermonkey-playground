@@ -180,7 +180,7 @@
 <body>
 <main>
   <h1>SpiderMonkey API Playground</h1>
-  <p class="subtitle">Write JavaScript, run it against the <code>/eval</code> endpoint, and see the output.</p>
+  <p class="subtitle">Write JavaScript, run it against the <code>/api/eval</code> endpoint, and see the output.</p>
 
   <div class="panel">
     <label for="code">JavaScript</label>
@@ -196,7 +196,7 @@
     <pre id="output" class="empty">Output will appear here.</pre>
   </div>
 
-  <footer>POST /eval with the code as the raw request body.</footer>
+  <footer>POST /api/eval with the code as the raw request body.</footer>
 </main>
 
 <script>
@@ -211,7 +211,7 @@
     outputEl.textContent = "";
 
     try {
-      const res = await fetch("/eval", {
+      const res = await fetch("/api/eval", {
         method: "POST",
         body: codeEl.value,
       });

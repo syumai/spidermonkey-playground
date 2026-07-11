@@ -4,7 +4,7 @@ An HTTP API that evaluates JavaScript using the SpiderMonkey engine (via [goccy/
 
 ## API
 
-### `POST /eval`
+### `POST /api/eval`
 
 Send JavaScript source code as the raw, plain-text request body. The script is evaluated and its stdout is returned as the plain-text response body.
 
@@ -15,12 +15,12 @@ Send JavaScript source code as the raw, plain-text request body. The script is e
 Example:
 
 ```
-curl -X POST http://localhost:3000/eval --data 'console.log(1 + 2);'
+curl -X POST http://localhost:3000/api/eval --data 'console.log(1 + 2);'
 ```
 
 ## Web Playground
 
-[`public/index.html`](public/index.html) is served at `/` and provides a simple form for trying the API from the browser: write some JavaScript, run it, and see the output.
+[`public/index.html`](public/index.html) is embedded into the server binary (via `go:embed`) and served at `/`. It provides a simple form for trying the API from the browser: write some JavaScript, run it, and see the output.
 
 ## Development
 
@@ -30,7 +30,7 @@ Run the server locally with:
 go run .
 ```
 
-This listens on `$PORT` (default `3000`).
+This serves both the API and the playground, listening on `$PORT` (default `3000`).
 
 ## License
 

@@ -1,13 +1,19 @@
 package main
 
 import (
+	"embed"
 	"io"
+	"io/fs"
+	"log"
 	"net/http"
 	"os"
 )
 
+//go:embed public
+var publicFS embed.FS
+
 func main() {
-	http.HandleFunc("POST /eval", func(w http.ResponseWriter, req *http.Request) {
+	http.HandleFunc("POST /api/eval", func(w http.ResponseWriter, req *http.Request) {
 		b, err := io.ReadAll(req.Body)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -20,6 +26,12 @@ func main() {
 		}
 		w.Write([]byte(result))
 	})
+
+	sub, err := fs.Sub(publicFS, "public")
+	if err != nil {
+		log.Fatal(err)
+	}
+	http.Handle("/", http.FileServerFS(sub))
 
 	port := os.Getenv("PORT")
 	if port == "" {
