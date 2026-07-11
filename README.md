@@ -1,4 +1,4 @@
-# spidermonkey-api
+# spidermonkey-playground
 
 An HTTP API that evaluates JavaScript using the SpiderMonkey engine (via [goccy/go-spidermonkey](https://github.com/goccy/go-spidermonkey)).
 
