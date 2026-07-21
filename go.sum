@@ -1,4 +1,4 @@
-github.com/goccy/go-spidermonkey v0.1.0 h1:kEQd1ueeKML7FdDriHp/sS41tT4HG8FztAoQy7i9be0=
-github.com/goccy/go-spidermonkey v0.1.0/go.mod h1:yfvSAgFUHs7odts7Als9WL8z4aY5DufJ5HfCaxPPuUg=
-github.com/goccy/spidermonkeywasm2go v0.1.0 h1:I9Okqi82xV//3uBCKCQWBrxqgeD7cxa+uKpllAVhNEM=
-github.com/goccy/spidermonkeywasm2go v0.1.0/go.mod h1:d/QMeextpkzKbzgW67FnEvhz2pzflTyjCCH2ZG8yic0=
+github.com/goccy/go-spidermonkey v0.2.0 h1:n/cBUvgNQPWVWwJC2xSROVObBPItw2ghNAANj1bcVpY=
+github.com/goccy/go-spidermonkey v0.2.0/go.mod h1:bDeP4U6S6kpCRZ4Cwvg+/IKjHqQqFoghYlP8WIVj/uI=
+github.com/goccy/spidermonkeywasm2go v0.2.1 h1:VCmrdR4ODcRRrpUDM5+1csSyQQE0p6gVq9U639jqluQ=
+github.com/goccy/spidermonkeywasm2go v0.2.1/go.mod h1:d/QMeextpkzKbzgW67FnEvhz2pzflTyjCCH2ZG8yic0=
