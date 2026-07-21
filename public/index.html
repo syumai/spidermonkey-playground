@@ -100,6 +100,27 @@
     letter-spacing: 0.03em;
   }
 
+  .editor-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .editor-header label {
+    margin-bottom: 0;
+  }
+
+  select#examples {
+    background: var(--panel);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+  }
+
   /* Editor: a highlighted <pre> layer behind a transparent-text textarea.
      Both layers must share identical text metrics so they align. */
   .editor {
@@ -143,7 +164,7 @@
     position: relative;
     display: block;
     width: 100%;
-    min-height: 180px;
+    min-height: 240px;
     resize: vertical;
     background: transparent;
     color: transparent;
@@ -262,7 +283,15 @@
   <p class="subtitle">Write JavaScript, run it against the <code>/api/eval</code> endpoint, and see the output.</p>
 
   <div class="panel">
-    <label for="code">JavaScript</label>
+    <div class="editor-header">
+      <label for="code">JavaScript</label>
+      <select id="examples" aria-label="Example">
+        <option value="hello">Hello World</option>
+        <option value="uuid">crypto.randomUUID</option>
+        <option value="await">Top-level await</option>
+        <option value="hono">Hono</option>
+      </select>
+    </div>
     <div class="editor">
       <pre id="highlight" aria-hidden="true"><code id="highlight-code"></code></pre>
       <textarea id="code" spellcheck="false">console.log("Hello, World!");</textarea>
@@ -283,6 +312,7 @@
 
   <footer>
     <p>POST /api/eval with the code as the raw request body.</p>
+    <p>Code runs as an ES module: <code>import</code> and top-level <code>await</code> both work, and <code>"hono"</code> is available to import.</p>
     <p>Powered by <a href="https://github.com/goccy/go-spidermonkey">goccy/go-spidermonkey</a>.</p>
   </footer>
 </main>
@@ -294,10 +324,35 @@
   const copyEl = document.getElementById("copy-curl");
   const highlightEl = document.getElementById("highlight");
   const highlightCodeEl = document.getElementById("highlight-code");
+  const examplesEl = document.getElementById("examples");
+
+  // --- Example presets ---
+
+  const EXAMPLES = {
+    hello: `console.log("Hello, World!");`,
+    uuid: `console.log(crypto.randomUUID());`,
+    await: `const value = await Promise.resolve(42);\nconsole.log(value);`,
+    hono: `import { Hono } from "hono";
+const app = new Hono();
+app.get("/", (c) => c.text("Hello Hono!"));
+app.get("/users/:id", (c) => c.json({ id: c.req.param("id") }));
+let res = await app.fetch(new Request("http://localhost/"));
+console.log(await res.text());
+res = await app.fetch(new Request("http://localhost/users/42"));
+console.log(await res.text());`,
+  };
+
+  examplesEl.addEventListener("change", () => {
+    const example = EXAMPLES[examplesEl.value];
+    if (example === undefined) return;
+    codeEl.value = example;
+    renderHighlight();
+    codeEl.focus();
+  });
 
   // --- Syntax highlighting ---
 
-  const KEYWORDS = "const|let|var|function|return|if|else|for|while|do|switch|case|break|continue|new|typeof|instanceof|in|of|class|extends|super|this|try|catch|finally|throw|async|await|yield|delete|void|static|get|set";
+  const KEYWORDS = "const|let|var|function|return|if|else|for|while|do|switch|case|break|continue|new|typeof|instanceof|in|of|class|extends|super|this|try|catch|finally|throw|async|await|yield|delete|void|static|get|set|import|export|from";
   const LITERALS = "true|false|null|undefined|NaN|Infinity";
 
   // Single-pass tokenizer: alternatives are tried in order at each

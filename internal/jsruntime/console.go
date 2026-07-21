@@ -1,64 +1,11 @@
-package main
+package jsruntime
 
 import (
-	"bytes"
-	"context"
 	"io"
 	"strings"
-	"time"
 
 	"github.com/goccy/go-spidermonkey"
-	"github.com/google/uuid"
 )
-
-func Eval(code string) (string, error) {
-	var buf bytes.Buffer
-	js, err := spidermonkey.New(spidermonkey.Config{Stdout: &buf, Stderr: &buf})
-	if err != nil {
-		return "", err
-	}
-	defer js.Close()
-
-	if err := defineCrypto(js); err != nil {
-		return "", err
-	}
-	if err := defineConsole(js); err != nil {
-		return "", err
-	}
-
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-	defer cancel()
-
-	result, err := js.Eval(ctx, code)
-	if err != nil {
-		return "", err
-	}
-	if result.Error != nil {
-		return "", result.Error
-	}
-	return buf.String(), nil
-}
-
-// defineCrypto defines the crypto object on the JS instance's global object.
-func defineCrypto(js *spidermonkey.JS) error {
-	cryptoObj, err := js.NewObject()
-	if err != nil {
-		return err
-	}
-	err = cryptoObj.DefineFunc("randomUUID",
-		func(cfg spidermonkey.Config, args []spidermonkey.Value) (spidermonkey.Value, error) {
-			// UUID v4, same as the Web standard crypto.randomUUID().
-			u, err := uuid.NewRandom()
-			if err != nil {
-				return nil, err
-			}
-			return spidermonkey.ValueOf(u.String()), nil
-		})
-	if err != nil {
-		return err
-	}
-	return js.Global().Set("crypto", cryptoObj)
-}
 
 // defineConsole defines print and the console object on the JS instance's
 // global object. The engine is pure ECMA-262 and has no built-in console;
